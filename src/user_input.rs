@@ -21,5 +21,25 @@ pub fn input_string(display_message: &str) -> Result<String> {
         .then_some(())
         .ok_or(Error::EmptyString)?;
 
-    Ok(user_input)
+    Ok(())
+}
+
+/// Reads an input from the standard input, trims it
+/// validates that the input is an i32 type and returns the input as an integer
+pub fn input_integer(display_message: &str) -> Result<i32> {
+    let mut user_input = String::new();
+    input_string(&mut user_input, display_message)?;
+
+    let integer_input = user_input.parse()?;
+    Ok(integer_input)
+}
+
+/// Reads an input from the standard input, trims it
+/// validates that the input is an char type and returns the input as a char
+pub fn input_char(display_message: &str) -> Result<char> {
+    let mut user_input = String::new();
+    input_string(&mut user_input, display_message)?;
+
+    let char_input = user_input.parse()?;
+    Ok(char_input)
 }
