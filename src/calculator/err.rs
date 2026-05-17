@@ -16,7 +16,7 @@ pub enum Error {
     /// Overflow occured in Multiplication calculation.
     MultiplicationOverflow,
 
-    // Division By 0
+    /// Division By 0
     DivisionByZero,
 }
 

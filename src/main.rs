@@ -13,7 +13,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     // Rusty
     run_rusty()?;
 
-    // Calculator - TBD
+    // Calculator
     run_calculator()?;
 
     // Guesser - TBD
