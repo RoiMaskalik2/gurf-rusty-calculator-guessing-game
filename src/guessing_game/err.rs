@@ -16,6 +16,9 @@ pub enum Error {
     /// Overflow occured from taking too many guesses without restarting the guessing game
     TotalTurnsOverflow,
 
+    /// This error happens when the user has reached an unreachable state in the game - meaning the API of the game has changed
+    ApiBreak,
+
     /// Error occurred during input reading.
     #[from]
     Io(user_input::Error),
