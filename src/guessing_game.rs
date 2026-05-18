@@ -8,21 +8,42 @@ mod err;
 use const_format::formatcp;
 pub use err::Error;
 use rand::RngExt;
-use std::{cmp::Ordering, ops::ControlFlow, ops::Range};
+use std::{cmp::Ordering, ops::Range};
 
-use crate::user_input;
 type Result<T> = core::result::Result<T, Error>;
 
 /// The guessing game engine generates a random number between this range.
 ///  this is the range of numbers that the user is allowd to guess between
 const GUESS_RANGE: Range<i32> = 1..101;
 
-// A message that will be diaplyed to the user when expecting to take an stdinput from the user.
-const DISPLAY_MESSAGE: &str = formatcp!(
+/// A message that will be diaplyed to the user when expecting to take an stdinput from the user.
+pub const DISPLAY_MESSAGE: &str = formatcp!(
     "Insert a number between {} - {}",
     GUESS_RANGE.start,
-    GUESS_RANGE.end
+    (GUESS_RANGE.end - 1)
 );
+
+/// Enum representing the outcome of a guess
+pub enum GuessOutcome {
+    /// The guess was correct - NOTE: The game will end in that case
+    Correct,
+
+    /// The guess was too high - The user should guess a lower number
+    TooHigh,
+
+    /// The guess was too low - The user should guess a higher number
+    TooLow,
+}
+
+impl From<Ordering> for GuessOutcome {
+    fn from(value: Ordering) -> Self {
+        match value {
+            Ordering::Equal => Self::Correct,
+            Ordering::Less => Self::TooLow,
+            Ordering::Greater => Self::TooHigh,
+        }
+    }
+}
 
 /// The Guessing Game engine, Createing a Guessing Game engine will allow the implementor to build a guessing game
 pub struct GuessingGameEngine {
@@ -42,13 +63,8 @@ impl GuessingGameEngine {
     pub fn new() -> Self {
         let mut rng = rand::rng();
         Self {
-            // Determines whether the game is taking place (the user did not guess the number or started a new game)
             is_game_active: true,
-
-            // Random number that for the user to guess
             generated_number: rng.random_range(GUESS_RANGE),
-
-            // The amount of turns it took the user to guess the random number
             total_turns: 0,
         }
     }
@@ -71,12 +87,11 @@ impl GuessingGameEngine {
 
     /// Run one iteration of the guessing game - take a numeric input from stdin.
     /// Return to the user if the number was higher/lower than the generated number
-    pub fn take_guess(&mut self) -> Result<ControlFlow<(), Ordering>> {
+    pub fn take_guess(&mut self, user_guess: i32) -> Result<GuessOutcome> {
         if !self.is_game_active {
             return Err(Error::UninitializedGame);
         }
 
-        let user_guess = user_input::input_integer(DISPLAY_MESSAGE)?;
         GUESS_RANGE
             .contains(&user_guess)
             .then_some(())
@@ -84,10 +99,14 @@ impl GuessingGameEngine {
 
         self.increment_total_turns()?;
 
-        match user_guess.cmp(&self.generated_number) {
-            Ordering::Equal => Ok(ControlFlow::Break(())),
-            order => Ok(ControlFlow::Continue(order)),
+        let guess_outcome = GuessOutcome::from(user_guess.cmp(&self.generated_number));
+
+        // End the game if the guess is correct
+        if let GuessOutcome::Correct = guess_outcome {
+            self.is_game_active = false;
         }
+
+        Ok(guess_outcome)
     }
 
     fn increment_total_turns(&mut self) -> Result<()> {
