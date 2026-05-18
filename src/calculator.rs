@@ -55,9 +55,11 @@ impl TryFrom<char> for Operator {
 /// This function will return an error if:
 /// * A calculation results in an integer overflow
 /// * A calculation results in a division by zero
-pub fn perform_calculation(first_number: i32, second_number: i32, operator: char) -> Result<i32> {
-    let operator = Operator::try_from(operator)?;
-
+pub fn perform_calculation(
+    first_number: i32,
+    second_number: i32,
+    operator: Operator,
+) -> Result<i32> {
     match operator {
         Operator::Addition => addition(first_number, second_number),
         Operator::Subtraction => subtraction(first_number, second_number),

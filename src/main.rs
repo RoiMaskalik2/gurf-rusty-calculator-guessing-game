@@ -43,6 +43,7 @@ fn run_calculator() -> Result<(), Box<dyn std::error::Error>> {
     let operation_display_message =
         format!("Choose Operation {}:", calculator::Operator::list_symbols());
     let operator = user_input::input_char(&operation_display_message)?;
+    let operator = calculator::Operator::try_from(operator)?;
 
     let calculation = calculator::perform_calculation(first_number, second_number, operator)?;
 
