@@ -3,14 +3,11 @@
 //! * start a game where a random number is generated
 //! * take input from the user and return an indication of the user's number guess
 //! * reset the game engine in order to start a new game
-mod err;
 
+use crate::{Error, Result};
 use const_format::formatcp;
-pub use err::Error;
 use rand::RngExt;
 use std::{cmp::Ordering, ops::Range};
-
-type Result<T> = core::result::Result<T, Error>;
 
 /// The guessing game engine generates a random number between this range.
 ///  this is the range of numbers that the user is allowd to guess between
