@@ -10,14 +10,16 @@ pub use err::Error;
 pub type Result<T> = core::result::Result<T, Error>;
 
 /// Reads a string from the standard input, trims it, and checks that the input is not empty.
-pub fn input_string(user_input: &mut String, display_message: &str) -> Result<()> {
+pub fn input_string(display_message: &str) -> Result<String> {
     println!("{}", display_message);
-    io::stdin().read_line(user_input)?;
+
+    let mut user_input = String::new();
+    io::stdin().read_line(&mut user_input)?;
     user_input.truncate(user_input.trim_end().len());
 
     (!user_input.is_empty())
         .then_some(())
         .ok_or(Error::EmptyString)?;
 
-    Ok(())
+    Ok(user_input)
 }

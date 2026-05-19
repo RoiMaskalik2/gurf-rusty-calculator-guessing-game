@@ -15,8 +15,7 @@ use rusty::Rusty;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     // Rusty
-    let mut user_name = String::new();
-    user_input::input_string(&mut user_name, "Please Insert Your Name")?;
+    let user_name = user_input::input_string("Please Insert Your Name")?;
 
     let rusty_assistant = Rusty::new(user_name);
     println!("{rusty_assistant}");
