@@ -1,18 +1,22 @@
 //! calculator that can receive an operation and two i32 integers and perform the calculation according to the operation.
 //! The valid operations of the calculator are: "+" - Addition, "-" - Subtraction, "*" - Multiplication, "/" - Division
-mod err;
 
-pub use err::Error;
+use crate::{Error, Result};
 use strum::{EnumIter, IntoEnumIterator};
-
-pub type Result<T> = core::result::Result<T, Error>;
 
 /// This enum Represents all of the possible operations allowed in the calculator
 #[derive(EnumIter)]
 pub enum Operator {
+    /// Addition math operation (+)
     Addition,
+
+    /// Subtraction math operation (-)
     Subtraction,
+
+    /// Multiplication math operation (*)
     Multiplication,
+
+    /// Division math operation (/)
     Division,
 }
 

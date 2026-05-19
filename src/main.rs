@@ -7,12 +7,7 @@
 //! 1. Rusty: take user name by input and print a nice message
 //! 2. Calculator: take two numbers and a valid operator by input and perform a calculation
 //! 3. Guesser: TBD
-
-mod calculator;
-mod rusty;
-mod user_input;
-
-use rusty::Rusty;
+use rusty_calculator_guesser::{Rusty, calculator, user_input};
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     // Rusty
@@ -27,8 +22,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 }
 
 fn run_rusty() -> Result<(), Box<dyn std::error::Error>> {
-    let mut user_name = String::new();
-    user_input::input_string(&mut user_name, "Please Insert Your Name")?;
+    let user_name = user_input::input_string("Please Insert Your Name")?;
 
     let rusty_assistant = Rusty::new(user_name);
     println!("{rusty_assistant}");
