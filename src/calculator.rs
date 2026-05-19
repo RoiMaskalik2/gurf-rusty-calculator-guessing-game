@@ -1,9 +1,5 @@
 //! calculator that can receive an operation and two i32 integers and perform the calculation according to the operation.
 //! The valid operations of the calculator are: "+" - Addition, "-" - Subtraction, "*" - Multiplication, "/" - Division
-<<<<<<< HEAD
-
-=======
->>>>>>> 0962cab (refactored code to have one error file and changed the library crate to do what it is supposed to do (re-exports and module declerations))
 use crate::{Error, Result};
 use strum::{EnumIter, IntoEnumIterator};
 

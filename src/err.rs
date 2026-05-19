@@ -42,27 +42,6 @@ pub enum Error {
     #[error("{self:?}")]
     DivisionByZero,
 
-    // ---- calculator ------------------------------------------------
-    /// Calculation was performed with an invalid operator.
-    #[error("{self:?}")]
-    InvalidOperation,
-
-    /// Overflow occured in Addition calculation.
-    #[error("{self:?}")]
-    AdditionOverflow,
-
-    /// Overflow occured in Subtraction calculation.
-    #[error("{self:?}")]
-    SubtractionOverflow,
-
-    /// Overflow occured in Multiplication calculation.
-    #[error("{self:?}")]
-    MultiplicationOverflow,
-
-    /// Division By 0
-    #[error("{self:?}")]
-    DivisionByZero,
-
     // ---- guessing_game ---------------------------------------------
     /// User provided a number not in range of the game.
     #[error("{self:?}")]
@@ -77,5 +56,3 @@ pub enum Error {
     #[error("{self:?}")]
     TotalTurnsOverflow,
 }
-
-impl std::error::Error for Error {}

@@ -11,11 +11,11 @@ fn main() -> core::result::Result<(), Box<dyn std::error::Error>> {
     run_calculator()?;
 
     // Guesser - TBD
-
+    run_guessing_game()?;
     Ok(())
 }
 
-fn run_rusty() -> Result<(), Box<dyn std::error::Error>> {
+fn run_rusty() -> Result<()> {
     let user_name = user_input::input_string("Please Insert Your Name")?;
 
     let rusty_assistant = Rusty::new(user_name);
@@ -24,38 +24,12 @@ fn run_rusty() -> Result<(), Box<dyn std::error::Error>> {
     Ok(())
 }
 
-fn run_calculator() -> Result<(), Box<dyn std::error::Error>> {
+fn run_calculator() -> Result<()> {
     let first_number = user_input::input_integer("Enter First Number:")?;
     let second_number = user_input::input_integer("Enter Second Number:")?;
 
     let operation_display_message =
         format!("Choose Operation {}:", calculator::Operator::list_symbols());
-    let operator = user_input::input_char(&operation_display_message)?;
-    let operator = calculator::Operator::try_from(operator)?;
-
-    let calculation = calculator::perform_calculation(first_number, second_number, operator)?;
-
-    print!("Result: {}", calculation);
-
-    Ok(())
-}
-
-/// Run the rusty exercise - print a personal friendly welcome message
-pub fn run_rusty() -> Result<()> {
-    let mut user_name = user_input::input_string("Please Insert Your Name")?;
-
-    let rusty_assistant = Rusty::new(user_name);
-    println!("{rusty_assistant}");
-
-    Ok(())
-}
-
-/// Run the calculator exercise - take two numbers and an operator from the user and perform a calculation
-pub fn run_calculator() -> Result<()> {
-    let first_number = user_input::input_integer("Enter First Number:")?;
-    let second_number = user_input::input_integer("Enter Second Number:")?;
-
-    let operation_display_message = format!("Choose Operation {}:", Operator::list_symbols());
     let operator = user_input::input_char(&operation_display_message)?;
     let operator = Operator::try_from(operator)?;
 
