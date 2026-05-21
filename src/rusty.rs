@@ -1,4 +1,5 @@
 //! friendly assistant for welcoming users.
+
 use std::fmt;
 
 /// Use this struct to print a nice welcome message
