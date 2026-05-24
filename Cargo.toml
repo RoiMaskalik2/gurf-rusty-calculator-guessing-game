@@ -6,3 +6,5 @@ edition = "2024"
 [dependencies]
 thiserror = "2.0.18"
 strum = {version="0.28.0", features = ["derive"]}
+rand = "0.10.1"
+const_format = "0.2.36"

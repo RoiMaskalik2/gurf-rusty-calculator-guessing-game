@@ -1,27 +1,21 @@
-#![forbid(unsafe_code)]
-#![warn(missing_docs)]
+use rusty_calculator_guesser::{
+    GuessOutcome, GuessingGameEngine, Operator, Result, Rusty, calculator, guessing_game,
+    user_input,
+};
 
-//! Rusty, Calculator and Guesser application.
-//!
-//! This application includes 3 exercises (Didnt have power to create different repo for each dir Gurf please don't kill me):
-//! 1. Rusty: take user name by input and print a nice message
-//! 2. Calculator: take two numbers and a valid operator by input and perform a calculation
-//! 3. Guesser: TBD
-use rusty_calculator_guesser::{Rusty, calculator, user_input};
-
-fn main() -> Result<(), Box<dyn std::error::Error>> {
+fn main() -> core::result::Result<(), Box<dyn std::error::Error>> {
     // Rusty
     run_rusty()?;
 
-    // Calculator - TBD
+    // Calculator
     run_calculator()?;
 
     // Guesser - TBD
-
+    run_guessing_game()?;
     Ok(())
 }
 
-fn run_rusty() -> Result<(), Box<dyn std::error::Error>> {
+fn run_rusty() -> Result<()> {
     let user_name = user_input::input_string("Please Insert Your Name")?;
 
     let rusty_assistant = Rusty::new(user_name);
@@ -30,18 +24,43 @@ fn run_rusty() -> Result<(), Box<dyn std::error::Error>> {
     Ok(())
 }
 
-fn run_calculator() -> Result<(), Box<dyn std::error::Error>> {
+fn run_calculator() -> Result<()> {
     let first_number = user_input::input_integer("Enter First Number:")?;
     let second_number = user_input::input_integer("Enter Second Number:")?;
 
     let operation_display_message =
         format!("Choose Operation {}:", calculator::Operator::list_symbols());
     let operator = user_input::input_char(&operation_display_message)?;
-    let operator = calculator::Operator::try_from(operator)?;
+    let operator = Operator::try_from(operator)?;
 
     let calculation = calculator::perform_calculation(first_number, second_number, operator)?;
 
-    print!("Result: {}", calculation);
+    println!("Result: {}", calculation);
+
+    Ok(())
+}
+
+/// Run the guessing game exercise - generate a random number and let the user guess (with input from stdin) the number until a match.
+pub fn run_guessing_game() -> Result<()> {
+    let mut guessing_game_engine = GuessingGameEngine::new();
+
+    loop {
+        let user_guess = user_input::input_integer(guessing_game::DISPLAY_MESSAGE)?;
+
+        match guessing_game_engine.take_guess(user_guess)? {
+            GuessOutcome::TooHigh => println!("Your Guess Is Higher"),
+            GuessOutcome::TooLow => println!("Your Guess Is Lower"),
+            GuessOutcome::Correct => {
+                println!(
+                    "Game Won! It took you {} turns",
+                    guessing_game_engine.get_total_turns()
+                );
+
+                // The game has ended, therefore we can stop the loop
+                break;
+            }
+        }
+    }
 
     Ok(())
 }

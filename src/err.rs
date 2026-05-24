@@ -3,7 +3,6 @@ use std::{char, io, num};
 
 /// Represents an error that can occur while taking user input using the [crate::user_input] module.
 #[derive(Debug, thiserror::Error)]
-#[allow(dead_code)]
 pub enum Error {
     // ---- user_input ------------------------------------------------
     /// User provided an empty input.
@@ -41,4 +40,17 @@ pub enum Error {
     /// Division By 0
     #[error("{self:?}")]
     DivisionByZero,
+
+    // ---- guessing_game ---------------------------------------------
+    /// User provided a number not in range of the game.
+    #[error("{self:?}")]
+    InvalidGuessRange,
+
+    /// The implementor using the module tried to take another guess after the game has ended.
+    #[error("{self:?}")]
+    TakeGuessAfterGameEnd,
+
+    /// Overflow occured from taking too many guesses without restarting the guessing game
+    #[error("{self:?}")]
+    TotalTurnsOverflow,
 }
